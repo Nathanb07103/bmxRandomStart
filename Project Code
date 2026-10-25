@@ -1,0 +1,34 @@
+void setup() {
+  
+  randomSeed(analogRead(A0)); // Reads empty A0 pin for pseudo random input
+  pinMode(13, OUTPUT); // Red light pin
+  pinMode(12, OUTPUT); // Yellow light 1 pin
+  pinMode(11, OUTPUT); // Yellow light 2 pin
+  pinMode(10, OUTPUT); // Green light pin
+}
+
+void loop() {
+  int randomWait = random(100, 2700); // random delay selection from 0.1s to 2.7s
+  delay(randomWait);
+  tone(8, 632, 60); // Beep 1
+  digitalWrite(13, HIGH); // Red light
+  delay(120);
+
+  tone(8, 632, 60); // Beep 2
+  digitalWrite(12, HIGH); // Yellow light 1
+  delay(120);
+
+  tone(8, 632, 60); // Beep 3
+  digitalWrite(11, HIGH); // Yellow light 2
+  delay(120);
+
+  tone(8, 632, 2250); // Beep 4
+  digitalWrite(10, HIGH); // Green light
+  delay(2250);
+
+  digitalWrite(13, LOW);
+  digitalWrite(12, LOW);
+  digitalWrite(11, LOW);
+  digitalWrite(10, LOW);
+  while(true){} // Halt until reset
+}
