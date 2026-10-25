@@ -9,7 +9,7 @@ void setup() {
 
 void loop() {
   int randomWait = random(100, 2700); // random delay selection from 0.1s to 2.7s
-  delay(randomWait);
+  delay(randomWait); // Exectutes random delay
   tone(8, 632, 60); // Beep 1
   digitalWrite(13, HIGH); // Red light
   delay(120);
