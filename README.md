@@ -24,8 +24,7 @@ Skills Demonstrated
 How it works
 
 Upon start up, the Arduino will read an analog input from an analog pin with nothing connected, giving a pseudo random output for the random seed.
-A random time from 0.1 seconds to 2.7 seconds will be delayed before starting the sequence. Taking an analog input for the seed was chosen over 
-typical time(0) as analogRead is already included within the fundamental Arduino API. The program then follows a sequence of 3 60ms beeps with 60ms
+A random time from 0.1 seconds to 2.7 seconds will be delayed before starting the sequence. The program then follows a sequence of 3 60ms beeps with 60ms
 of silence between each one, followed by a forth longer beep, at 2.25s. At the same time each tone statement executes, a digitalWrite statement
 lights up an LED light.
 
