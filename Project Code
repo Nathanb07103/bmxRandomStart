@@ -1,34 +1,68 @@
+#include <LiquidCrystal_I2C.h>
+#include <PCM.h>
+#include "audio.h"  // audio file converted from .WAV to a C++ array via online WAV2c converter https://guilhermerodrigues680.github.io/wav2c-online/ 
+#include <Wire.h>
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
 void setup() {
-  
-  randomSeed(analogRead(A0)); // Reads empty A0 pin for pseudo random input
-  pinMode(13, OUTPUT); // Red light pin
-  pinMode(12, OUTPUT); // Yellow light 1 pin
-  pinMode(11, OUTPUT); // Yellow light 2 pin
-  pinMode(10, OUTPUT); // Green light pin
+  randomSeed(analogRead(A0));
+  pinMode(4, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);
+  pinMode(7, OUTPUT);
+  lcd.init();
+  lcd.backlight();
 }
 
 void loop() {
-  int randomWait = random(100, 2700); // random delay selection from 0.1s to 2.7s
-  delay(randomWait); // Exectutes random delay
-  tone(8, 632, 60); // Beep 1
-  digitalWrite(13, HIGH); // Red light
+  startPlayback(sounddata_data, sounddata_length);  // Start of audio
+  delay(6000);
+  stopPlayback();                                   // End audio
+  TCCR2A = _BV(COM2A1) | _BV(COM2B1) | _BV(WGM20);  // Reset for tone
+  TCCR2B = _BV(CS22);
+  int randomWait = random(100, 2700);
+  delay(randomWait);  // Random delay
+  tone(11, 632, 60); // Beep 1
+  digitalWrite(4, HIGH); // Red light
   delay(120);
 
-  tone(8, 632, 60); // Beep 2
-  digitalWrite(12, HIGH); // Yellow light 1
+  tone(11, 632, 60); // Beep 2
+  digitalWrite(5, HIGH); // Yellow light 1
   delay(120);
 
-  tone(8, 632, 60); // Beep 3
-  digitalWrite(11, HIGH); // Yellow light 2
+  tone(11, 632, 60); // Beep 3
+  digitalWrite(6, HIGH); // Yellow light 2
   delay(120);
 
-  tone(8, 632, 2250); // Beep 4
-  digitalWrite(10, HIGH); // Green light
-  delay(2250);
+  tone(11, 632, 2250); // Beep 4
+  digitalWrite(7, HIGH); // Green light
+  
+  int startTime = millis();  // Start of reaction timer
+  int endTime = 0;
+  bool buttonPressed = false;
 
-  digitalWrite(13, LOW);
-  digitalWrite(12, LOW);
-  digitalWrite(11, LOW);
-  digitalWrite(10, LOW);
-  while(true){} // Halt until reset
+  while (millis() - startTime < 2500) {
+    if (digitalRead(12) == HIGH) {
+      endTime = millis();  // End of reaction timer
+      buttonPressed = true;
+      break;
+    }
+  }
+  lcd.setCursor(0, 0);
+  if(buttonPressed) {
+    int reactionTime = endTime - startTime;
+    lcd.print("Your reaction");
+    lcd.setCursor(0, 1);
+    lcd.print("time is ");
+    lcd.print(reactionTime);
+    lcd.print("ms");
+  } else {
+    lcd.print("Too slow!");
+  }
+  digitalWrite(4, LOW);
+  digitalWrite(5, LOW);
+  digitalWrite(6, LOW);
+  digitalWrite(7, LOW);
+  while(true){}
 }
