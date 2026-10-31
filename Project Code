@@ -16,7 +16,7 @@ void setup() {
 }
 
 void loop() {
-  startPlayback(sounddata_data, sounddata_length);  // Start of audio
+  startPlayback(soundData, soundLength);  // Start of audio
   delay(6000);
   stopPlayback();                                   // End audio
   TCCR2A = _BV(COM2A1) | _BV(COM2B1) | _BV(WGM20);  // Reset for tone
